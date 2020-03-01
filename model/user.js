@@ -1,6 +1,6 @@
 const mongoose = require('../bootstrap/db');
-
 const schema = mongoose.Schema;
+const bcrypt = require('bcrypt');
 var userschema = new schema({
   name:{ type:String, required:true},
   family:{ type:String, required:true},
@@ -13,5 +13,18 @@ var userschema = new schema({
 });
 
 
+userschema.pre('save', function(next){
+  const user = this;
+  bcrypt.genSalt(10, function(error, salt){
+    if (error) {
+      next(error);
+    }
+    bcrypt.hash(user.password, salt, function(error, encyptedPassword){
+      user.password = encyptedPassword;
+      next();
+    });   
+  });
+ 
+});
 
 module.exports = mongoose.model('user', userschema);

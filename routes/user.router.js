@@ -36,13 +36,29 @@ router.get('/get' ,async(req,res) =>{
 //store new user
 router.post('/' ,async(req,res) => {
  try{
-    const newuser = await new User(req.body).save();
-        res.send(newuser);
-  
- }catch(e){
-     res.send('error');
+   const {password , email} =req.body;
+
+   if (!password || !email) {
+       res.send({
+          status: false,
+           msg:'please provide the correct data'
+       });
+    }else  if (password.length < 6) {
+             return res.send({
+            status:false,
+            msg:'password must be at least 6 characters!!!'
+           });
+          
+       
+   }else{
+       const Newuser = await new User(req.body).save();
+       res.send(Newuser);
+   }
+  }catch(e){
+     res.send(e);
  }
-});
+}
+);
 
 //edit user
 router.put('/:id' ,async(req,res) =>{
