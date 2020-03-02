@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const User = require('../model/user');
-
+const bcrypt = require('bcrypt');
 //list
 router.get('/' ,async(req,res) =>{
     try{
@@ -51,10 +51,11 @@ router.post('/' ,async(req,res) => {
           
        
    }else{
+   
        const Newuser = await new User(req.body).save();
        res.send(Newuser);
-   }
-  }catch(e){
+
+   }  }catch(e){
      res.send(e);
  }
 }

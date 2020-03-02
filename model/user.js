@@ -5,7 +5,7 @@ var userschema = new schema({
   name:{ type:String, required:true},
   family:{ type:String, required:true},
   email:{ type:String, required:true,unique:true},
-  password:{ type:Number, required:true, minlength:6},
+  password:{ type:String, required:true, minlength:6},
   age:{ type:Number, required:false,min:10 ,max:100}
 
 },{
@@ -26,5 +26,22 @@ userschema.pre('save', function(next){
   });
  
 });
+
+userschema.methods.comparePassword = function(password, cb){
+  const user = this;
+  bcrypt.compare(password, user.password, function(err, isMatch) {
+    if (isMatch) {
+      cb(null, isMatch);
+    } else {
+      cb('ERROR', false);
+    }
+  });
+};
+ 
+
+
+
+
+
 
 module.exports = mongoose.model('user', userschema);
