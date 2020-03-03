@@ -9,14 +9,6 @@ require('./middleware')(app);
 require('./routes')(app);
 // error handlers
 require('./services/errorhandler')(app);
-
-
-
-
-
-
-
-
-    
+ 
 module.exports = app;
    

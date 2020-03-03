@@ -2,6 +2,9 @@ const router = require('express').Router();
 const User = require('../model/user');
 const bcrypt = require('bcrypt');
 const guard = require('../middleware/guard');
+const Books = require('../model/book');
+
+
 //list
 router.get('/' ,async(req,res) =>{
     try{
