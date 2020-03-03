@@ -1,7 +1,7 @@
 const router =require('express').Router();
-const bcrypt = require('bcrypt');
+const jwt  = require('jsonwebtoken');
 const User = require('../model/user');
-
+const privateKey = require('../config').secretKey;
 
 
 router.post('/login' ,async (req ,res) => {
@@ -22,7 +22,17 @@ router.post('/login' ,async (req ,res) => {
         }else{
       user.comparePassword (password , function (error , match) {
           if (match){
-              res.send(user);
+
+
+            jwt.sign({email:user.email} , privateKey ,{expiresIn: '1h'} , function (err , token) {
+               if(!err){
+                   res.send({token}); 
+               }
+               
+            });
+
+
+              
           }else{
               res.send('error login');
           }

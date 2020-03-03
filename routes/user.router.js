@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const User = require('../model/user');
 const bcrypt = require('bcrypt');
+const guard = require('../middleware/guard');
 //list
 router.get('/' ,async(req,res) =>{
     try{
@@ -62,7 +63,7 @@ router.post('/' ,async(req,res) => {
 );
 
 //edit user
-router.put('/:id' ,async(req,res) =>{
+router.put('/:id',guard ,async(req,res) =>{
     const {id} = req.params;
     try{
         const newuser = await User.findByIdAndUpdate(id , req.body,{upsert:true, new:true});
@@ -73,7 +74,7 @@ router.put('/:id' ,async(req,res) =>{
 });
 
 //delete user
-router.delete('/:id' ,async(req,res) =>{
+router.delete('/:id',guard ,async(req,res) =>{
     const {id} = req.params;
     try{
         const deleteeduser = await User.findByIdAndDelete(id);
